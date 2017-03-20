@@ -2,11 +2,11 @@
 'use strict';
 
 // Load the Mongoose module and Schema object
-var mongoose = require('mongoose'),
+const mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
 // Define a new 'UserSchema'
-var UserSchema = new Schema({
+const UserSchema = new Schema({
 	firstName: String,
 	lastName: String,
 	email: {
@@ -29,7 +29,7 @@ var UserSchema = new Schema({
 		type: String,
 		// Validate the 'password' value length
 		validate: [
-			function(password) {
+			(password)=>{
 				return password.length >= 6;
 			},
 			'Password Should Be Longer'
@@ -38,7 +38,7 @@ var UserSchema = new Schema({
 	website: {
 		type: String,
 		// Use a setter property to validate protocol existance in 'website' field
-		set: function(url) {
+		set: (url) =>{
 			if (!url) {
 				return url;
 			} else {
@@ -63,16 +63,16 @@ var UserSchema = new Schema({
 });
 
 // Set the 'fullname' virtual property
-UserSchema.virtual('fullName').get(function() {
+UserSchema.virtual('fullName').get(()=> {
 	return this.firstName + ' ' + this.lastName;
-}).set(function(fullName) {
-	var splitName = fullName.split(' ');
+}).set((fullName)=>{
+	const splitName = fullName.split(' ');
 	this.firstName = splitName[0] || '';
 	this.lastName = splitName[1] || '';
 });
 
 // Create the 'findOneByUsername' static method
-UserSchema.statics.findOneByUsername = function(username, callback) {
+UserSchema.statics.findOneByUsername = (username, callback)=>{
 	// Use the 'findOne' method to retrieve a user document
 	this.findOne({
 		username: new RegExp(username, 'i')
@@ -80,7 +80,7 @@ UserSchema.statics.findOneByUsername = function(username, callback) {
 };
 
 // Create the 'authenticate' instance method
-UserSchema.methods.authenticate = function(password) {
+UserSchema.methods.authenticate = (password)=> {
 	return this.password === password;
 };
 

@@ -2,7 +2,7 @@
 'use strict';
 
 // Load the module dependencies
-var config = require('./config'),
+const config = require('./config'),
 	express = require('express'),
 	morgan = require('morgan'),
 	compress = require('compression'),
@@ -11,11 +11,11 @@ var config = require('./config'),
 	session = require('express-session');
 
 // Define the Express configuration method
-module.exports = function() {
+module.exports = () =>{
 	// Create a new Express application instance
-	var app = express();
+	const app = express();
 
-	// Use the 'NDOE_ENV' variable to activate the 'morgan' logger or 'compress' middleware
+	// Use the 'NDOE_ENV' constiable to activate the 'morgan' logger or 'compress' middleware
 	if (process.env.NODE_ENV === 'development') {
 		app.use(morgan('dev'));
 	} else if (process.env.NODE_ENV === 'production') {
