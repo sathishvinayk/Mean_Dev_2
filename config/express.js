@@ -8,6 +8,7 @@ const config = require('./config'),
 	compress = require('compression'),
 	bodyParser = require('body-parser'),
 	methodOverride = require('method-override'),
+	passport=require('passport'),
 	session = require('express-session');
 
 // Define the Express configuration method
@@ -40,6 +41,8 @@ module.exports = () =>{
 	app.set('views', './app/views');
 	app.set('view engine', 'ejs');
 
+	app.use(passport.initialize());
+	app.use(passport.session());
 	// Load the routing files
 	require('../app/routes/index.server.routes.js')(app);
 	require('../app/routes/users.server.routes.js')(app);
