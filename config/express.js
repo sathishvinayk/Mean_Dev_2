@@ -1,22 +1,20 @@
-// Invoke 'strict' JavaScript mode
-'use strict';
-
 // Load the module dependencies
-const config = require('./config'),
-	express = require('express'),
-	morgan = require('morgan'),
-	compress = require('compression'),
-	bodyParser = require('body-parser'),
-	methodOverride = require('method-override'),
-	passport=require('passport'),
-	session = require('express-session');
+const config = require('./config');
+const express = require('express');
+const morgan = require('morgan');
+const compress = require('compression');
+const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
+const session = require('express-session');
+const flash = require('connect-flash');
+const passport = require('passport');
 
 // Define the Express configuration method
-module.exports = () =>{
+module.exports = function() {
 	// Create a new Express application instance
 	const app = express();
 
-	// Use the 'NDOE_ENV' constiable to activate the 'morgan' logger or 'compress' middleware
+	// Use the 'NDOE_ENV' variable to activate the 'morgan' logger or 'compress' middleware
 	if (process.env.NODE_ENV === 'development') {
 		app.use(morgan('dev'));
 	} else if (process.env.NODE_ENV === 'production') {
@@ -41,8 +39,13 @@ module.exports = () =>{
 	app.set('views', './app/views');
 	app.set('view engine', 'ejs');
 
+	// Configure the flash messages middleware
+	app.use(flash());
+
+	// Configure the Passport middleware
 	app.use(passport.initialize());
 	app.use(passport.session());
+
 	// Load the routing files
 	require('../app/routes/index.server.routes.js')(app);
 	require('../app/routes/users.server.routes.js')(app);
